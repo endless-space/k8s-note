@@ -10,7 +10,7 @@ k8s 开发测试环境搭建有多种方案, 诸如:
 
 - MicroK8s
 
-  
+----
 
 1. #### vagrant 及 virtualbox安装
 
