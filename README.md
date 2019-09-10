@@ -38,25 +38,25 @@
 
       基本资源对象包括:
 
-      ​	Node
+      ​	Node: 集群节点
 
-      ​	Namespace
+      ​	Namespace: 多租户资源隔离机制
 
-      ​	Pod
+      ​	Pod: 应用, 容器组
 
-      ​	Volume
+      ​	Volume: 存储卷
 
-      ​	Service
+      ​	Service: 服务, 一组应用副本访问入口
 
       常用控制器资源对象:
 
-      ​	Deployment & ReplicaSet
+      ​	Deployment & ReplicaSet: 无状态应用管理
 
-      ​	StatefulSet
+      ​	StatefulSet: 有状态应用管理
 
-      ​	DaemonSet
+      ​	DaemonSet: 每Node后台服务管理
 
-      ​	Job & CornJob
+      ​	Job & CornJob: 批处理任务及定时任务管理
 
 2. ### Kubernetes 部署及维护
 
@@ -68,9 +68,19 @@
 
    3. Kubernetes安全管理
 
+      基于双向认证的https通信
+
+      RBAC
+
+      准入任务管理
+
    4. Kubernetes网络管理
 
+      flannel
+
    5. Kubernetes存储管理
+
+      Volume, PersistenceVolume, PersistenceVolumeClaim, StorageClass, rook项目
 
    6. 故障排查定位
 
