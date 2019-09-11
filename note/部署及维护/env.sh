@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
-function dns() {
+function hosts() {
   cat >> /etc/hosts <<EOF
-192.168.100.100 dev-k8s-master
-192.168.100.101 dev-k8s-node1
-192.168.100.102 dev-k8s-node2
+192.168.100.100 k8s-case-1-master
+192.168.100.101 k8s-case-1-node1
+192.168.100.102 k8s-case-1-node2
 EOF
 }
 
 function updatepkg() {
+  yum makecache fast
   yum -y install wget yum-utils
 
   if [ ! -d "/etc/yum.repos.d/" ]; then
@@ -21,12 +22,13 @@ function updatepkg() {
   fi
   mv Centos-7.repo CentOs-Base.repo
   yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+  
 
   yum clean all
-  yum makecache
+  yum makecache fast
 
   yum install -y epel-release
-  yum install -y conntrack ntpdate ntp ipvsadm ipset jq iptables curl sysstat libseccomp wget device-mapper-persistent-data lvm2 
+  yum install -y conntrack ntpdate ntp ipvsadm ipset jq iptables curl sysstat libseccomp wget device-mapper-persistent-data lvm2 bash-completion
 }
 
 function datetimecfg() {
@@ -89,7 +91,8 @@ function docker() {
   
   cat > /etc/docker/daemon.json <<EOF
 {
-  "registry-mirrors" : ["http://2595fda0.m.daocloud.io"]
+  "registry-mirrors" : ["http://2595fda0.m.daocloud.io"],
+  "exec-opts": ["native.cgroupdriver=systemd"]
 }
 EOF
 
@@ -99,11 +102,26 @@ EOF
   systemctl start docker
 }
 
+function kubernetes() {
+  cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+EOF
+  yum install -y kubelet kubeadm kubectl
+  systemctl enable kubelet && systemctl start kubelet
+}
+
 updatepkg
-dns
+hosts
 datetimecfg
 closeswap
 closeselinux
 netfiltercfg
 kernelcfg
 docker
+kubernetes

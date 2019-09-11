@@ -14,13 +14,23 @@ k8s 开发测试环境搭建有多种方案, 诸如:
 
 1. #### vagrant 及 virtualbox安装
 
+   这个直接安装就好了
+
 2. #### 使用vagrant创建linux虚拟机环境
+
+   使用自定义的box
 
 3. #### 在linux虚拟机中安装docker
 
+   参见kubeadm一节的env.sh脚本
+
 4. #### 在linux虚拟机中安装go开发环境
 
+   使用gvm版本管理器
+
 5. #### 在linux虚拟机中安装kind
+
+   调整kind配置, 使用kind创建集群
 
 6. #### 使用kind创建k8s开发测试集群
 

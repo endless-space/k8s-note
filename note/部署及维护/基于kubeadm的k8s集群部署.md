@@ -17,5 +17,70 @@
 
 3. 使用kubeadm安装集群
 
-   1. kubeadm init
+   kubeadm config print init-defaults > k8s/kubeadm-init.yml #集群初始化配置
+
+   ``` yaml
+   apiVersion: kubeadm.k8s.io/v1beta2
+   bootstrapTokens:
+   - groups:
+     - system:bootstrappers:kubeadm:default-node-token
+     token: abcdef.0123456789abcdef
+     ttl: 24h0m0s
+     usages:
+     - signing
+     - authentication
+   kind: InitConfiguration
+   localAPIEndpoint:
+     advertiseAddress: 192.168.100.100
+     bindPort: 6443
+   nodeRegistration:
+     criSocket: /var/run/dockershim.sock
+     name: dev-k8s-master
+     taints:
+     - effect: NoSchedule
+       key: node-role.kubernetes.io/master
+     kubeletExtraArgs:
+       pod-infra-container-image: registry.aliyuncs.com/google_containers/pause:3.1
+   ---
+   apiServer:
+     timeoutForControlPlane: 4m0s
+   apiVersion: kubeadm.k8s.io/v1beta2
+   certificatesDir: /etc/kubernetes/pki
+   clusterName: kubernetes
+   controllerManager: {}
+   dns:
+     type: CoreDNS
+   etcd:
+     local:
+       dataDir: /var/lib/etcd
+   kind: ClusterConfiguration
+   kubernetesVersion: v1.15.0
+   networking:
+     dnsDomain: cluster.local
+     serviceSubnet: 10.96.0.0/12
+     podSubnet: 10.244.0.0/16
+   scheduler: {}
+   imageRepository: registry.aliyuncs.com/google_containers
+   ```
+
+   1. kubeadm init --config=kubeadm-init.yml
    2. kubeadm join
+
+   ```
+   source <(kubectl completion bash)
+   echo "source <(kubectl completion bash)" >> ~/.bashrc
+   
+   alias k=kubectl
+   complete -F __start_kubectl 
+   ```
+
+4. 安装网络插件
+
+   wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml 
+
+   多网卡请修改配置, 指定一个网卡 --iface=xxxx
+
+5. 镜像加速:
+
+   1. docker pull [quay.mirrors.ustc.edu.cn/xxx/yyy:zzz](http://quay.mirrors.ustc.edu.cn/xxx/yyy:zzz) 
+

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simpleapp-deployment
+spec:
+  selector:
+    matchLabels:
+      app: simpleapp
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: simpleapp
+    spec:
+      containers:
+      - name: simpleapp
+        image: simpleapp:v1
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simpleapp-service 
+spec:
+  type: NodePort
+  selector:
+    app: simpleapp
+  ports:
+    - nodePort: 30163
+      port: 8080 
+      targetPort: 8080
