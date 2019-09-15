@@ -1,5 +1,11 @@
 # 基于kubeadm的k8s集群部署
 
+kubeadm 是官方维护k8s部署方案. 目标是通过:
+
+​	kube init 和 kube join两条命令完成系统 部署任务. 
+
+​	采用容器化的方式部署出kubelet以外的系统组件.
+
 1. 使用vagrant创建3台linux主机
 
    [Vagrantfile](note/部署及维护/Vagrantfile)
