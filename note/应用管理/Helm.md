@@ -14,7 +14,7 @@
 
 #### 部署维护:
 
-1. helm init
+1. helm init (注意权限, RBAC配置)
 2. docker pull gcr.io/kubernetes-helm/tiller:v2.14.3 -> docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.14.3
 3. docker tag IMAGEID(镜像id) REPOSITORY:TAG
 4. helm install stable/mysql #注意先准备好默认的storageClass, rook

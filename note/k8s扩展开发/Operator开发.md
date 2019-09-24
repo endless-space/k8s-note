@@ -1,6 +1,6 @@
 # Operator开发
 
-1. golang环境搭建(go1.12.9)
+1. golang环境搭建(go1.12.9, 使用gvm)
 
 2. 安装kubebuilder, kustomize
 
